@@ -54,7 +54,7 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="{% url 'index' %}" class="nav-item nav-link active">หน้าหลัก</a>
                 <a href="{% url 'about' %}" class="nav-item nav-link">เกี่ยวกับเรา</a>
-                <a href="{% url 'index' %}" class="nav-item nav-link">การเลี้ยงลูกด้วยนมแม่</a>
+                <a href="{% url 'home' %}" class="nav-item nav-link">การเลี้ยงลูกด้วยนมแม่</a>
                 <!--<div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu fade-down m-0">
@@ -505,11 +505,11 @@
             <div class="row g-5">
                 <div class="col-lg-6 col-md-6">
                     <h4 class="text-white mb-3">ลิงค์ภายใน</h4>
-                    <a class="btn btn-link" href="">เกี่ยวกับเรา</a>
-                    <a class="btn btn-link" href="">ติดต่อเรา</a>
-                    <a class="btn btn-link" href="">บทความ</a>
-                    <a class="btn btn-link" href="">วิสัยทัศน์พันธกิจ</a>
-                    <a class="btn btn-link" href="">คำถามบ่อย</a>
+                    <a class="btn btn-link" href="{% url 'about' %}">เกี่ยวกับเรา</a>
+                    <a class="btn btn-link" href="{% url 'contact' %}">ติดต่อเรา</a>
+                    <a class="btn btn-link" href="{% url 'home' %}">บทความ</a>
+                    <!--<a class="btn btn-link" href="">วิสัยทัศน์พันธกิจ</a>
+                    <a class="btn btn-link" href="">คำถามบ่อย</a>-->
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <h4 class="text-white mb-3">ติดต่อเรา</h4>

@@ -26,11 +26,11 @@ def home(request):
     paginator = Paginator(all_posts,4,orphans=2)
     page_number = request.GET.get('p',1)
     page_obj = paginator.get_page(page_number)
-    return render(request,'posts/index.html',{'posts':page_obj,'total':all_posts.count()})
+    return render(request,'home.html',{'posts':page_obj,'total':all_posts.count()})
 
 class HomeView(ListView):
     model = Post
-    template_name = 'posts/index.html'
+    template_name = 'home.html'
     ordering = ['-id']
     context_object_name = 'posts'
     paginate_by = 4
@@ -48,11 +48,11 @@ def post(request, id):
             return HttpResponseRedirect(posturl)
     
     form = CommentForm()
-    return render(request,"posts/post.html",{'post_dict':post,'form':form,'comments':post.comment_set.all()})
+    return render(request,"post.html",{'post_dict':post,'form':form,'comments':post.comment_set.all()})
 
 class PostView(DetailView):
     model = Post
-    template_name = 'posts/post.html'
+    template_name = 'post.html'
     context_object_name = 'post_dict'
 
     def get_context_data(self, **kwargs):
@@ -74,7 +74,7 @@ class PostView(DetailView):
    
 def Tags(request,id):
     tag = Tag.objects.get(id=id)
-    return render(request,'posts/tags.html',{'tags':tag.post_set.all()})
+    return render(request,'tags.html',{'tags':tag.post_set.all()})
 
 def search(request):
     query = request.GET.get('query',None)
@@ -82,11 +82,11 @@ def search(request):
     posts = Post.objects.filter(Q(post_title__icontains=query) | Q(post_content__icontains=query)).order_by('-id')
     paginator =  Paginator(posts,4)
     page_obj = paginator.get_page(page_number)
-    return render(request,'posts/search.html',{'posts':page_obj,'query':query,'total':posts.count()})
+    return render(request,'search.html',{'posts':page_obj,'query':query,'total':posts.count()})
 
 class SearchView(ListView):
     model = Post
-    template_name = 'posts/search.html'
+    template_name = 'search.html'
     context_object_name = 'posts'
     paginate_by = 4 
 
