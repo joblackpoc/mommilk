@@ -19,6 +19,14 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+import os
+from urllib.parse import urljoin
+from django.core.files.storage import FileSystemStorage
+class CustomStorage(FileSystemStorage):
+    """Custom storage for django_ckeditor_5 images."""
+
+    location = os.path.join(settings.MEDIA_ROOT, "django_ckeditor_5")
+    base_url = urljoin(settings.MEDIA_URL, "django_ckeditor_5/")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

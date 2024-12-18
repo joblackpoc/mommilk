@@ -9,7 +9,10 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+from urllib.parse import urljoin
 
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -158,10 +161,12 @@ customColorPalette = [
             'label': 'Blue'
         },
     ]
+#CKEDITOR_5_CUSTOM_CSS = 'path_to.css' # optional
+#CKEDITOR_5_FILE_STORAGE = "CustomStorage" # optional
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
-                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+                    'bulletedList', 'numberedList', 'blockQuote',  ],
 
     },
     'extends': {
@@ -173,9 +178,9 @@ CKEDITOR_5_CONFIGS = {
             'blockQuote',
         ],
         'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
-        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
-                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 
+                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote',  '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'removeFormat',
                     'insertTable',],
         'image': {
             'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
