@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
+from django_ckeditor_5.fields import CKEditor5Field
 # Create your models here.
 
 class Tag(models.Model):
@@ -9,7 +10,7 @@ class Tag(models.Model):
         return self.name
 class Post(models.Model):
     post_title = models.CharField(max_length=60)
-    post_content = HTMLField()
+    post_content = CKEditor5Field(null=True, blank=True, config_name='extends')
     published_date = models.DateField(auto_now=True)
     tags = models.ManyToManyField(Tag)
     post_image = models.ImageField(upload_to='post',default='post/1.jpg')
