@@ -162,11 +162,11 @@ customColorPalette = [
         },
     ]
 #CKEDITOR_5_CUSTOM_CSS = 'path_to.css' # optional
-#CKEDITOR_5_FILE_STORAGE = "CustomStorage" # optional
+CKEDITOR_5_FILE_STORAGE = "main.storage.CustomStorage" # optional
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
-                    'bulletedList', 'numberedList', 'blockQuote',  ],
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
 
     },
     'extends': {
@@ -178,9 +178,9 @@ CKEDITOR_5_CONFIGS = {
             'blockQuote',
         ],
         'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
-        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 
-                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote',  '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'removeFormat',
+        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
                     'insertTable',],
         'image': {
             'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
@@ -223,3 +223,6 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+# Define a constant in settings.py to specify file upload permissions
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"  # Possible values: "staff", "authenticated", "any"
