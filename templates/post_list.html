@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block post %}
+<h1>Posts</h1>
+<a href="{% url 'create_post' %}">Add a new Post</a>
+<ul>
+    {% for post in posts %}
+    <li><a href="{% url 'post_detail' post.pk %}">{{ post.post_title }}</a>
+        by {{ post.published_date }}  </li>
+    {% endfor %}
+</ul>
+{% endblock post %}
+    

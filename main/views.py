@@ -1,10 +1,10 @@
 from typing import Any
 from django.db.models.query import QuerySet
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post,Tag
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
-from .forms import CommentForm
+from .forms import PostForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import Q
@@ -21,83 +21,38 @@ def contact(request):
 def about(request):
     return render(request, 'about.html')
 
-def home(request):
-    all_posts = Post.objects.all().order_by('-id')
-    paginator = Paginator(all_posts,4,orphans=2)
-    page_number = request.GET.get('p',1)
-    page_obj = paginator.get_page(page_number)
-    return render(request,'home.html',{'posts':page_obj,'total':all_posts.count()})
-
-class HomeView(ListView):
-    model = Post
-    template_name = 'home.html'
-    ordering = ['-id']
-    context_object_name = 'posts'
-    paginate_by = 4
-
-def post(request, id):
-    post = get_object_or_404(Post,id=id)
+def create_post(request):
     if request.method == 'POST':
-        form = CommentForm(request.POST)
+        form = PostForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.user = request.user
-            comment.save()
-            posturl = reverse('post',args=[id])
-            return HttpResponseRedirect(posturl)
-    
-    form = CommentForm()
-    return render(request,"post.html",{'post_dict':post,'form':form,'comments':post.comment_set.all()})
+            form.save()
+            return redirect('post_list')
+    else:
+        form = PostForm()
+    return render(request, 'post_form.html', {'form': form})
 
-class PostView(DetailView):
-    model = Post
-    template_name = 'post.html'
-    context_object_name = 'post_dict'
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, 'post_list.html', {'posts': posts})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = CommentForm()
-        context['comments'] = self.object.comment_set.all()
-        return context
-    
-    def post(self,request,pk):
-        self.object = self.get_object()
-        form = CommentForm(request.POST)
+def update_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = self.object
-            comment.user = request.user
-            comment.save()
-            posturl = reverse('post',args=[self.object.id])
-            return HttpResponseRedirect(posturl)
-   
-def Tags(request,id):
-    tag = Tag.objects.get(id=id)
-    return render(request,'tags.html',{'tags':tag.post_set.all()})
+            form.save()
+            return redirect('post_list')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'post_form.html', {'form': form})
 
-def search(request):
-    query = request.GET.get('query',None)
-    page_number = request.GET.get('p',1)
-    posts = Post.objects.filter(Q(post_title__icontains=query) | Q(post_content__icontains=query)).order_by('-id')
-    paginator =  Paginator(posts,4)
-    page_obj = paginator.get_page(page_number)
-    return render(request,'search.html',{'posts':page_obj,'query':query,'total':posts.count()})
+def delete_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('post_list')
+    return render(request, 'post_confirm_delete.html', {'post': post})
 
-class SearchView(ListView):
-    model = Post
-    template_name = 'search.html'
-    context_object_name = 'posts'
-    paginate_by = 4 
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['query'] = self.request.GET.get("query")
-        return context
-    def get_queryset(self):
-        query = self.request.GET.get('query',None)
-        if query is not None:
-            post_query = Post.objects.filter(Q(post_title__icontains=query) | Q(post_content__icontains=query)).order_by('-id')
-            return post_query
-        else:
-            return Post.objects.none()
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'post_detail.html', {'post': post})

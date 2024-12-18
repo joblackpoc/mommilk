@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block form %}
+    <h1>{{ form.instance.pk|yesno:"Edit Post,Add New Post" }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'post_list' %}">Cancel</a>
+{% endblock form %}
+    

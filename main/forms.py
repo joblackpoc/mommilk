@@ -1,13 +1,7 @@
-from .models import Post,Comment
+from .models import Post
 from django import forms
 
-class CommentForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
-        model = Comment
-        exclude = [
-            'post',
-            'user'
-        ]
-        widgets = {
-            'comment':forms.Textarea(attrs={'class':'form-control'})
-        }
+        model = Post
+        fields = ['post_title', 'post_content', 'tags', 'post_image']
