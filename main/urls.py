@@ -13,14 +13,15 @@ class CustomStorage(FileSystemStorage):
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('contact', views.contact, name='contact'),
-    path('about', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
+    path('about/', views.about, name='about'),
     #path('post_list', views.post, name='post_list'),
-    path('post_list', views.PostListView.as_view(), name='post_list'),
+    path('post_list/', views.PostListView.as_view(), name='post_list'),
     path('new/', views.create_post, name='create_post'),
     path('<int:pk>/', views.post_detail, name='post_detail'),
     path('<int:pk>/edit/', views.update_post, name='update_post'),
     path('<int:pk>/delete/', views.delete_post, name='delete_post'),
-    path('info_list', views.InfoListView.as_view() ,name='info_list'),
+    path('info_list/', views.InfoListView.as_view() ,name='info_list'),
     path('detail/<int:pk>/', views.info_detail, name='info_detail'),
+    
 ]

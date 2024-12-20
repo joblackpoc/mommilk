@@ -74,3 +74,20 @@ class Comment(models.Model):
     comment = models.TextField()
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+
+class Team(models.Model):
+    fname = models.CharField(max_length=200)
+    lname = models.CharField(max_length=200)
+    position = models.CharField(max_length=200)
+    team_image = models.ImageField(upload_to='team', default='team/team.jpg')
+
+    def __str__(self):
+        return f'{self.fname} {self.lname}'
+
+class About(models.Model):
+    about_title = models.CharField(max_length=100)
+    about_content = CKEditor5Field(null=True, blank=True, config_name='extends')
+    about_image = models.ImageField(upload_to='about', default='about/about1.jpg')
+
+    def __str__(self):
+        return self.about_title

@@ -1,7 +1,7 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
-from .models import Post, Infomation
+from .models import Post, Infomation, Team, About
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from .forms import PostForm
@@ -28,10 +28,14 @@ def index(request):
     return render(request, 'index.html', context)
 
 def contact(request):
-    return render(request, 'contact.html')
+    team = Team.objects.all().order_by('id')[:3]
+    context = {'team': team}
+    return render(request, 'contact.html', context)
 
 def about(request):
-    return render(request, 'about.html')
+    about = About.objects.all()
+    context = {'about': about}
+    return render(request, 'about.html', context)
 
 def create_post(request):
     if request.method == 'POST':
@@ -75,7 +79,7 @@ def post_detail(request, pk):
     return render(request, 'post_detail.html', {'post': post})
 
 class InfoListView(ListView):
-    paginate_by = 8
+    paginate_by = 6
     model = Infomation
     template_name = 'info_list.html'
     ordering = ['-id']
