@@ -56,3 +56,7 @@ def delete_post(request, pk):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'post_detail.html', {'post': post})
+
+def detail(request, pk):
+    post_detail = get_object_or_404(Post, pk=pk)
+    return render(request, 'home.html', {'post_detail': post_detail})
