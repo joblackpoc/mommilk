@@ -1,7 +1,7 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
-from .models import Post
+from .models import Post, Infomation
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from .forms import PostForm
@@ -18,7 +18,14 @@ from .forms import PostForm
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    posts = Post.objects.all().order_by('id')[:4]
+    features = Post.objects.all().order_by('-id')[:3]
+    infos = Infomation.objects.all().order_by('id')[:4]
+    context = {'posts': posts,
+               'features': features,
+               'infos': infos}
+
+    return render(request, 'index.html', context)
 
 def contact(request):
     return render(request, 'contact.html')
@@ -67,7 +74,14 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'post_detail.html', {'post': post})
 
-
+class InfoListView(ListView):
+    paginate_by = 8
+    model = Infomation
+    template_name = 'info_list.html'
+    ordering = ['-id']
+def info_detail(request, pk):
+    info = get_object_or_404(Infomation, pk=pk)
+    return render(request, 'info_detail.html', {'info': info})
 
 
 

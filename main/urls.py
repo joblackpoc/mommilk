@@ -21,4 +21,6 @@ urlpatterns = [
     path('<int:pk>/', views.post_detail, name='post_detail'),
     path('<int:pk>/edit/', views.update_post, name='update_post'),
     path('<int:pk>/delete/', views.delete_post, name='delete_post'),
+    path('info_list', views.InfoListView.as_view() ,name='info_list'),
+    path('detail/<int:pk>/', views.info_detail, name='info_detail'),
 ]

@@ -51,6 +51,7 @@ class Categories(models.Model):
 class Post(models.Model):
     post_category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     post_title = models.CharField(max_length=60)
+    post_short = models.CharField(max_length=100, blank=True, null=True)
     post_content = CKEditor5Field(null=True, blank=True, config_name='extends')
     published_date = models.DateTimeField(auto_now_add=True)
     post_image = models.ImageField(upload_to='post',default='post/1.jpg')
@@ -59,6 +60,16 @@ class Post(models.Model):
     def __str__(self):
         return self.post_title
     
+class Infomation(models.Model):
+    info_title = models.CharField(max_length=100)
+    info_content = CKEditor5Field(null=True, blank=True, config_name='extends')
+    info_image = models.ImageField(upload_to='info',default='info/1.jpg')
+    published = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.info_title
+
+
 class Comment(models.Model):
     comment = models.TextField()
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
