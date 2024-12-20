@@ -1,7 +1,7 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
-from .models import Post,Tag
+from .models import Post
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from .forms import PostForm
@@ -10,6 +10,11 @@ from django.urls import reverse
 from django.db.models import Q
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.dispatch.dispatcher import receiver
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.urls import conf
+from .forms import PostForm
 
 # Create your views here.
 def index(request):
@@ -31,10 +36,15 @@ def create_post(request):
         form = PostForm()
     return render(request, 'post_form.html', {'form': form})
 
-def post_list(request):
-    posts = Post.objects.all()
-    return render(request, 'post_list.html', {'posts': posts})
+# def post_list(request):
+#   posts = Post.objects.all()
+#   return render(request, 'post_list.html', {'posts': posts})
 
+class PostListView(ListView):
+    paginate_by = 6
+    model = Post
+    template_name = 'post_list.html'
+    ordering = ['-id']
 def update_post(request, pk):
     post = Post.objects.get(pk=pk)
     if request.method == 'POST':
@@ -57,6 +67,7 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'post_detail.html', {'post': post})
 
-def detail(request, pk):
-    post_detail = get_object_or_404(Post, pk=pk)
-    return render(request, 'home.html', {'post_detail': post_detail})
+
+
+
+

@@ -1,7 +1,44 @@
-from .models import Post
+from .models import Post, Profile
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.forms import ModelForm
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'email', 'username', 'password1', 'password2']
+        labels = {
+            'first_name': 'Name',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})
+
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['name', 'email', 'username',
+                   'profile_image']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['post_title', 'post_content', 'tags', 'post_image']
+        fields = ['post_title', 'post_content', 'post_image']
+
+        label = {
+            'post_title': 'เรื่อง',
+            'post_content': 'เนื้อหา',
+            'post_image': 'รูปภาพ'   
+        }
+
