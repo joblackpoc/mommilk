@@ -19,20 +19,10 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-import os
-from urllib.parse import urljoin
-from django.core.files.storage import FileSystemStorage
-class CustomStorage(FileSystemStorage):
-    """Custom storage for django_ckeditor_5 images."""
-
-    location = os.path.join(settings.MEDIA_ROOT, "django_ckeditor_5")
-    base_url = urljoin(settings.MEDIA_URL, "django_ckeditor_5/")
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('tinymce/', include('tinymce.urls')),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
-]
-urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+
