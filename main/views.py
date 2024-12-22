@@ -21,9 +21,15 @@ def index(request):
     posts = Post.objects.all().order_by('id')[:4]
     features = Post.objects.all().order_by('-id')[:3]
     infos = Infomation.objects.all().order_by('id')[:4]
+
+    "#Number of visits to this view, as counted in the session variable."
+    num_visits = request.session.get('num_visits', 900)
+    request.session['num_visits'] = num_visits + 1
+
     context = {'posts': posts,
                'features': features,
-               'infos': infos}
+               'infos': infos,
+               'num_visits': num_visits,}
 
     return render(request, 'index.html', context)
 
@@ -88,4 +94,10 @@ def info_detail(request, pk):
     return render(request, 'info_detail.html', {'info': info})
 
 
-
+def visit(request):
+    "#Number of visits to this view, as counted in the session variable."
+    num_visits = request.session.get('num_visits', 900)
+    request.session['num_visits'] = num_visits + 1
+    context = {'num_visits': num_visits
+    }
+    return render(request,'index.html',context=context)
