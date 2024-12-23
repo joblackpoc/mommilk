@@ -5,14 +5,11 @@ from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from django_ckeditor_5.fields import CKEditor5Field
 from django.db.models.fields.related import ForeignKey
-
 from django.urls import reverse
-# Create your models here.
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-
-
+from django.contrib.contenttypes.fields import GenericRelation
 class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=True)
@@ -48,6 +45,7 @@ class Categories(models.Model):
     name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
+    
 class Post(models.Model):
     post_category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     post_title = models.CharField(max_length=60)
@@ -55,7 +53,6 @@ class Post(models.Model):
     post_content = CKEditor5Field(null=True, blank=True, config_name='extends')
     published_date = models.DateTimeField(auto_now_add=True)
     post_image = models.ImageField(upload_to='post',default='post/1.jpg')
-
 
     def __str__(self):
         return self.post_title
@@ -91,3 +88,10 @@ class About(models.Model):
 
     def __str__(self):
         return self.about_title
+    
+class PageVisit(models.Model):
+    page_name = models.CharField(max_length=255, unique=True)
+    visit_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.page_name} - {self.visit_count} visits"

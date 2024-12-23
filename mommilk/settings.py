@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'main',
     'tinymce',
     'django_ckeditor_5',
+    'hitcount',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'mommilk.urls'

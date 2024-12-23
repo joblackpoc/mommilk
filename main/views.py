@@ -1,7 +1,7 @@
 from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect
-from .models import Post, Infomation, Team, About
+from .models import Post, Infomation, Team, About, PageVisit
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from .forms import PostForm
@@ -14,13 +14,19 @@ from django.dispatch.dispatcher import receiver
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.urls import conf
-from .forms import PostForm
+
 
 # Create your views here.
 def index(request):
     posts = Post.objects.all().order_by('id')[:4]
     features = Post.objects.all().order_by('-id')[:3]
     infos = Infomation.objects.all().order_by('id')[:4]
+
+    page, created = PageVisit.objects.get_or_create(page_name="index")
+    page.visit_count += 1
+    page.save()
+
+    # Pass the visit count to the template
 
     "#Number of visits to this view, as counted in the session variable."
     num_visits = request.session.get('num_visits', 900)
@@ -29,7 +35,7 @@ def index(request):
     context = {'posts': posts,
                'features': features,
                'infos': infos,
-               'num_visits': num_visits,}
+               "visit_count": page.visit_count,}
 
     return render(request, 'index.html', context)
 
@@ -101,3 +107,4 @@ def visit(request):
     context = {'num_visits': num_visits
     }
     return render(request,'index.html',context=context)
+

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Profile, Categories, Infomation, Team, About
+from .models import Post, Profile, Categories, Infomation, Team, About, PageVisit
 # Register your models here.
 
 @admin.register(Post)
@@ -9,6 +9,10 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ['published_date']
     search_fields = ['post_title']
 
+
+@admin.register(PageVisit)
+class PageVisitAdmin(admin.ModelAdmin):
+    list_display = ('page_name', 'visit_count')
 
 admin.site.register(Profile)
 admin.site.register(Categories)
