@@ -26,12 +26,6 @@ def index(request):
     page.visit_count += 1
     page.save()
 
-    # Pass the visit count to the template
-
-    "#Number of visits to this view, as counted in the session variable."
-    num_visits = request.session.get('num_visits', 900)
-    request.session['num_visits'] = num_visits + 1
-
     context = {'posts': posts,
                'features': features,
                'infos': infos,
@@ -108,3 +102,14 @@ def visit(request):
     }
     return render(request,'index.html',context=context)
 
+def visit(request):
+    # Track visits for the "index" page
+    page, created = PageVisit.objects.get_or_create(page_name="index")
+    page.visit_count += 1
+    page.save()
+
+    # Pass the visit count to the template
+    context = {
+        "visit_count": page.visit_count,
+    }
+    return render(request, "index.html", context)
